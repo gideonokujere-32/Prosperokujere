@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | Apostle Prosper Okujere</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* Full uncropped photo grid styling */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      align-items: start;
+    }
+    .photo-item {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--bg-card-border);
+      background: var(--bg-card);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .photo-item:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-teal);
+    }
+    .photo-item-media {
+      background: #00000008;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+    }
+    .photo-item img {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+      transition: transform 0.4s ease;
+    }
+    .photo-item:hover img {
+      transform: scale(1.02);
+    }
+    .photo-info {
+      padding: 1rem 1.2rem;
+      border-top: 1px solid var(--bg-card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .photo-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+    .photo-zoom-hint {
+      color: var(--primary-teal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(var(--primary-teal-rgb), 0.1);
+      transition: var(--transition-smooth);
+    }
+    .photo-item:hover .photo-zoom-hint {
+      background: var(--primary-teal);
+      color: #ffffff;
+      transform: scale(1.1);
+    }
+
+    /* Slideshow Modal */
+    .slideshow-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(5, 12, 14, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .slideshow-modal.active {
+      display: flex;
+    }
+    .slideshow-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-size: 1.8rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+    .slideshow-close:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #fff;
+    }
+    .slideshow-stage {
+      position: relative;
+      max-width: 90vw;
+      max-height: 78vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slideshow-stage img {
+      max-width: 88vw;
+      max-height: 76vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      user-select: none;
+    }
+    .slideshow-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 1.5rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+    .slideshow-nav-btn:hover {
+      background: var(--primary-teal);
+      border-color: var(--primary-teal);
+    }
+    .slideshow-prev {
+      left: -25px;
+    }
+    .slideshow-next {
+      right: -25px;
+    }
+    @media (max-width: 768px) {
+      .slideshow-prev { left: 5px; }
+      .slideshow-next { right: 5px; }
+    }
+    .slideshow-footer {
+      margin-top: 1.5rem;
+      color: #fff;
+      text-align: center;
+    }
+    .slideshow-counter {
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      color: var(--primary-teal-light);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .slideshow-caption-text {
+      font-size: 1.05rem;
+      font-family: var(--font-serif);
+      margin-top: 0.3rem;
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+
+<div id="scroll-indicator"></div>
+<div class="scroll-tracker-aside">
+  <div class="scroll-thumb" id="scroll-thumb"></div>
+  <div class="scroll-direction-indicator" id="scroll-direction">▼</div>
+</div>
+<nav class="inpage-widget" id="inpage-widget" aria-label="Page sections"></nav>
+
+<header class="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-brand"><span class="brand-emblem">✝</span><span>Apostle Prosper Okujere</span></a>
+    <nav><ul class="nav-menu">
+      <li><a href="../index.html" class="nav-link">Home</a></li>
+      <li><a href="his-story.html" class="nav-link">His Story</a></li>
+      <li><a href="ministry.html" class="nav-link">Ministry</a></li>
+      <li class="has-dropdown"><a href="teachings.html" class="nav-link">Teachings ▾</a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-item"><a href="teachings.html">📖 All Teachings</a></li>
+          <li class="dropdown-item"><a href="teachings.html">🎧 Listen to Audio</a></li>
+          <li class="dropdown-item"><a href="teachings.html">📜 Manuscripts</a></li>
+        </ul>
+      </li>
+      <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+      <li><a href="tributes.html" class="nav-link">Tributes</a></li>
+      <li><a href="legacy.html" class="nav-link">Legacy</a></li>
+      <li><button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button></li>
+    </ul></nav>
+    <button class="mobile-toggle-btn" id="mobile-toggle" aria-label="Open Menu"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+  </div>
+</header>
+
+<div class="mobile-nav-overlay" id="mobile-overlay"></div>
+<aside class="mobile-nav-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <div class="nav-brand" style="font-size:1.1rem;"><span class="brand-emblem">✝</span><span>Apostle Prosper</span></div>
+    <button id="close-drawer" style="background:none;border:none;font-size:1.6rem;color:var(--text-main);cursor:pointer;">&times;</button>
+  </div>
+  <ul class="drawer-links">
+    <li><a href="../index.html" class="mobile-nav-link">Home</a></li>
+    <li><a href="his-story.html" class="mobile-nav-link">His Story</a></li>
+    <li><a href="ministry.html" class="mobile-nav-link">Ministry</a></li>
+    <li><a href="teachings.html" class="mobile-nav-link">Teachings & Listen</a></li>
+    <li><a href="gallery.html" class="mobile-nav-link">Gallery</a></li>
+    <li><a href="tributes.html" class="mobile-nav-link">Tributes</a></li>
+    <li><a href="legacy.html" class="mobile-nav-link">Legacy</a></li>
+  </ul>
+</aside>
+
+<main>
+  <div class="page-hero" id="header" data-section-title="Gallery">
+    <div class="container">
+      <span class="page-hero-eyebrow">Moments in Time</span>
+      <h1 class="page-hero-title">Photographic Gallery</h1>
+      <p class="page-hero-sub">Memories of family milestones, ministerial conventions, public service, and fellowship moments.</p>
+      
+      <!-- Slideshow Launch Button -->
+      <div style="margin-top: 2rem;">
+        <button id="start-slideshow-btn" class="btn btn-primary" style="padding: 0.85rem 2.2rem; font-size: 1rem; gap: 0.6rem;">
+          ▶ Launch Slideshow
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Available photos with uncropped view -->
+  <section class="section" id="photos" data-section-title="Photographs">
+    <div class="container">
+      <div class="section-header reveal" style="margin-bottom:2.5rem;">
+        <span class="section-subtitle">Cherished Memories</span>
+        <h2 class="section-title">Portraits & Milestones</h2>
+        <p class="section-desc">Click any photo or launch the slideshow to view each moment in full detail.</p>
+      </div>
+
+      <div class="photo-grid">
+        <div class="photo-item reveal" onclick="openSlideshow(0)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-hero.jpg" alt="Apostle Prosper Okujere smiling in white suit and red tie" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Warm Smile in White Suit</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="photo-item reveal" onclick="openSlideshow(1)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-marriage-couple.jpg" alt="Apostle Prosper with Rev. Rita Okujere" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Apostle Prosper & Rev. Rita Okujere</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="photo-item reveal" onclick="openSlideshow(2)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-mic.jpg" alt="Apostle Prosper holding microphone during exhortation" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Ministering with the Microphone</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="photo-item reveal" onclick="openSlideshow(3)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-suit.jpg" alt="Apostle Prosper standing in black suit" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Standing in Official Suit</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="photo-item reveal" onclick="openSlideshow(4)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-formal-black.jpg" alt="Apostle Prosper seated in formal attire with bowtie" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Seated in Formal Bowtie</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="photo-item reveal" onclick="openSlideshow(5)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-traditional.jpg" alt="Apostle Prosper in regal traditional attire" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Regal Traditional Attire</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="photo-item reveal" onclick="openSlideshow(6)">
+          <div class="photo-item-media">
+            <img src="../assets/images/apostle-early-days.jpg" alt="Apostle Prosper in youthful days" loading="lazy">
+          </div>
+          <div class="photo-info">
+            <span class="photo-title">Early Youthful Days</span>
+            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coming Soon categories -->
+  <section class="section section-alt" id="categories" data-section-title="Categories">
+    <div class="container" style="max-width:780px;">
+      <div class="coming-soon-card reveal">
+        <span class="coming-soon-badge">Coming Soon</span>
+        <div class="legacy-icon" style="margin:0 auto 1.5rem;">🖼️</div>
+        <h2 style="font-size:1.8rem; margin-bottom:0.8rem;">Categorised Photo Archives</h2>
+        <p style="max-width:520px; margin:0 auto 1.5rem;">We are compiling more photo albums across specific life milestones.</p>
+        <div style="display:flex; justify-content:center; gap:0.8rem; flex-wrap:wrap;">
+          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Family & Matrimony</span>
+          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Civil Service Career</span>
+          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Ordination & Camp Meetings</span>
+          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Sound of Abundance Ministry</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Full-screen Interactive Slideshow Modal -->
+<div class="slideshow-modal" id="slideshow-modal" role="dialog" aria-modal="true" aria-label="Photo Slideshow">
+  <button class="slideshow-close" id="slideshow-close-btn" aria-label="Close Slideshow">&times;</button>
+  
+  <div class="slideshow-stage">
+    <button class="slideshow-nav-btn slideshow-prev" id="slideshow-prev-btn" aria-label="Previous Photo">&#10094;</button>
+    <img id="slideshow-img" src="" alt="Slideshow presentation">
+    <button class="slideshow-nav-btn slideshow-next" id="slideshow-next-btn" aria-label="Next Photo">&#10095;</button>
+  </div>
+
+  <div class="slideshow-footer">
+    <div class="slideshow-counter" id="slideshow-counter">1 / 7</div>
+    <div class="slideshow-caption-text" id="slideshow-caption">Photo</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-brand">Apostle Prosper OgheneChovwen Sunday Okujere</div>
+    <p class="footer-quote">"Until resurrection day, rest on, great eagle. The Fasting Apostle."</p>
+    <ul class="footer-nav">
+      <li><a href="../index.html">Home</a></li><li><a href="his-story.html">His Story</a></li><li><a href="ministry.html">Ministry</a></li><li><a href="teachings.html">Teachings</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="tributes.html">Tributes</a></li><li><a href="legacy.html">Legacy</a></li>
+    </ul>
+    <div class="footer-bottom">&copy; 2026 In Loving Memory of Apostle Prosper O. S. Okujere. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  const GALLERY_DATA = [
+    { src: '../assets/images/apostle-hero.jpg', caption: 'Radiant smile in white suit and red tie' },
+    { src: '../assets/images/apostle-marriage-couple.jpg', caption: 'Apostle Prosper and his beloved wife, Rev. Rita Okujere' },
+    { src: '../assets/images/apostle-mic.jpg', caption: 'Apostle Prosper holding the microphone during ministry' },
+    { src: '../assets/images/apostle-suit.jpg', caption: 'Official ministerial service portrait' },
+    { src: '../assets/images/apostle-formal-black.jpg', caption: 'Distinguished statesman in black suit and bowtie' },
+    { src: '../assets/images/apostle-traditional.jpg', caption: 'Regal and joyful patriarch in traditional attire' },
+    { src: '../assets/images/apostle-early-days.jpg', caption: 'Youthful days of perseverance and faith' }
+  ];
+
+  let currentIndex = 0;
+  const modal = document.getElementById('slideshow-modal');
+  const slideImg = document.getElementById('slideshow-img');
+  const counterEl = document.getElementById('slideshow-counter');
+  const captionEl = document.getElementById('slideshow-caption');
+
+  function openSlideshow(index = 0) {
+    currentIndex = index;
+    updateSlide();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSlideshow() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % GALLERY_DATA.length;
+    updateSlide();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + GALLERY_DATA.length) % GALLERY_DATA.length;
+    updateSlide();
+  }
+
+  function updateSlide() {
+    const item = GALLERY_DATA[currentIndex];
+    slideImg.src = item.src;
+    slideImg.alt = item.caption;
+    counterEl.textContent = `${currentIndex + 1} / ${GALLERY_DATA.length}`;
+    captionEl.textContent = item.caption;
+  }
+
+  document.getElementById('start-slideshow-btn')?.addEventListener('click', () => openSlideshow(0));
+  document.getElementById('slideshow-close-btn')?.addEventListener('click', closeSlideshow);
+  document.getElementById('slideshow-next-btn')?.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+  document.getElementById('slideshow-prev-btn')?.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.classList.contains('slideshow-stage')) {
+      closeSlideshow();
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('active')) return;
+    if (e.key === 'Escape') closeSlideshow();
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+</script>
+</body>
+</html>
