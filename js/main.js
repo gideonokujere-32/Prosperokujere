@@ -306,6 +306,20 @@ function renderTributes(containerId, data) {
   });
 }
 
+function resizeMasonryItems() {
+  const cards = document.querySelectorAll('.tributes-wall .tribute-card');
+  const rowHeight = 10; // matches grid-auto-rows: 10px
+  cards.forEach(card => {
+    // Only calculate for visible cards
+    if (card.offsetParent !== null) {
+      card.style.gridRowEnd = 'auto';
+      const height = card.getBoundingClientRect().height;
+      const rowSpan = Math.ceil((height + 28) / (rowHeight + 0));
+      card.style.gridRowEnd = `span ${rowSpan}`;
+    }
+  });
+}
+
 /* Tribute tabs */
 function initTributeTabs() {
   const tabs = document.querySelectorAll('.tributes-tab-btn');
@@ -317,6 +331,10 @@ function initTributeTabs() {
   renderTributes('general-tributes-grid', GENERAL_TRIBUTES);
   renderTributes('family-tributes-grid', FAMILY_TRIBUTES);
 
+  // Initial sizing
+  setTimeout(resizeMasonryItems, 50);
+  window.addEventListener('resize', resizeMasonryItems);
+
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       tabs.forEach(b => b.classList.remove('active'));
@@ -324,6 +342,7 @@ function initTributeTabs() {
       const tab = btn.dataset.tab;
       if (famWrap) famWrap.style.display = tab === 'family' ? 'block' : 'none';
       if (genWrap) genWrap.style.display = tab === 'general' ? 'block' : 'none';
+      setTimeout(resizeMasonryItems, 30);
     });
   });
 }

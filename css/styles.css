@@ -409,16 +409,17 @@ a:hover { color: var(--primary-teal-light); }
 .tributes-tab-btn:hover { border-color: var(--primary-teal); color: var(--primary-teal); }
 .tributes-tab-btn.active { background: var(--primary-teal); border-color: var(--primary-teal); color: #fff; box-shadow: 0 6px 20px var(--teal-glow); }
 
-/* Flexible grid with dense packing to mix squares and rectangles */
+/* True Masonry Grid with natural height row-span packing */
 .tributes-wall {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-flow: dense;
-  gap: 1.75rem;
+  grid-auto-rows: 10px;
+  gap: 0 1.75rem;
   align-items: start;
 }
 
 .tribute-card {
+  margin-bottom: 1.75rem;
   background: var(--bg-card);
   border: 1px solid var(--bg-card-border);
   border-radius: 16px;
@@ -427,6 +428,7 @@ a:hover { color: var(--primary-teal-light); }
   transition: var(--transition-smooth);
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 .tribute-card:hover { transform: translateY(-5px); border-color: var(--primary-teal); box-shadow: var(--shadow-md); }
 
