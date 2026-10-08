@@ -172,7 +172,7 @@ const FAMILY_TRIBUTES = [
 ];
 
 const GENERAL_TRIBUTES = [
-  { id: 'gen-house-of-freedom', name: "Rev. (Dr.) Williams Chiedu", relation: "National Pastor For the Bishop, Freedom Ministries Int'l (House of Freedom)", isFeatured: true,
+  { id: 'gen-house-of-freedom', name: "Rev. (Dr.) Williams Chiedu", relation: "National Pastor For the Bishop, Freedom Ministries Int'l (House of Freedom)", isFeatured: true, isWide: true,
     message: "Having to write this tribute today is not what I would have wanted to do. No. At least not at this point in time. One year ago, almost to the date, you were with us at the Jubilee International Convention 2025 hale and hearty and we all rejoiced to have you in our midst and we were all looking forward to many more Jubilee Conventions to celebrate together. But alas! It would not be so. Indeed, man proposes but God disposes.\n\nRev Prosper O. S. Okujere came into Freedom Ministries International Inc Asaba (House of Freedom) as one seeking truth and knowledge, and quickly integrated himself into the flow of activities in the church. He joined the Ushering / Protocol team, where he rose to become the Head within a short time. He grew steadily in his faith and love for God's kingdom being elevated from the position of a deacon to a Pastor, then a Reverend Minister and finally becoming our National Pastor. Together with his entire family members (his wife being ordained as a Pastor too), he became a rallying point in the ministry. He used his office as a National Pastor to bring into the ministry his own peculiar grace and functionality, developing robust and cordial relationships with members and other pastors.\n\nDespite the hiccups that resulted in his leaving Freedom Ministries, we are grateful to God that a proper and cordial resolution of matters and a full reunion was carried out during Jubilee Convention 2025. Apostle Prosper Okujere was a man of great faith, love for Jesus and the Kingdom of God, who carried out his assignment with dignity, love, compassion and respect for all. Indeed, he came, he saw, participated and conquered, and he has returned to his Maker and Creator, whom he loved and served wholeheartedly while on this side of eternity. Rest on in the bosom of the Lord, gallant soldier of the Cross, until the resurrection when we meet to part no more." },
   { id: 'gen-patience', name: "Lady Patience Ajeoyibo Taghwo", relation: "Immediate Younger Sister", isFeatured: true,
     message: "Ose one, it is unbelievable that you left me just like that on this planet earth. My great adviser, my teacher, my father, my encourager, how I enjoy your spiritual teaching and your empowerment to everyone that comes around you. I miss you my father, God knows the best for you. Rest on daddy. Adieu my number one in my mother's gate." },
@@ -289,7 +289,10 @@ function renderTributes(containerId, data) {
     const initials = item.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
     const paragraphs = item.message.split('\n\n').map(p => `<p>${esc(p.replace(/\n/g, '<br>'))}</p>`).join('');
     const card = document.createElement('div');
-    card.className = `tribute-card ${item.isFeatured ? 'tribute-featured' : ''}`;
+    const classes = ['tribute-card'];
+    if (item.isFeatured) classes.push('tribute-featured');
+    if (item.isWide) classes.push('tribute-wide');
+    card.className = classes.join(' ');
     card.innerHTML = `
       <div class="tribute-header">
         <div class="tribute-avatar">${initials}</div>
