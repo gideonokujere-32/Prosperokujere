@@ -9,10 +9,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/styles.css">
   <style>
-    /* Full uncropped photo grid styling */
+    /* Category Filter Tabs */
+    .gallery-filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .gallery-filter-btn {
+      background: var(--bg-card);
+      border: 1.5px solid var(--bg-card-border);
+      color: var(--text-main);
+      padding: 0.65rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      font-family: var(--font-sans);
+    }
+    .gallery-filter-btn:hover {
+      border-color: var(--primary-teal);
+      color: var(--primary-teal);
+      transform: translateY(-2px);
+    }
+    .gallery-filter-btn.active {
+      background: var(--primary-teal);
+      border-color: var(--primary-teal);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--teal-glow);
+    }
+
+    /* Photo Grid Styling */
     .photo-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 2rem;
       align-items: start;
     }
@@ -33,16 +65,17 @@
       border-color: var(--primary-teal);
     }
     .photo-item-media {
-      background: #00000008;
+      background: rgba(0, 0, 0, 0.03);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0.75rem;
+      min-height: 260px;
     }
     .photo-item img {
       width: 100%;
       height: auto;
-      max-height: 480px;
+      max-height: 440px;
       object-fit: contain;
       display: block;
       border-radius: 8px;
@@ -73,6 +106,7 @@
       border-radius: 50%;
       background: rgba(var(--primary-teal-rgb), 0.1);
       transition: var(--transition-smooth);
+      flex-shrink: 0;
     }
     .photo-item:hover .photo-zoom-hint {
       background: var(--primary-teal);
@@ -86,7 +120,7 @@
       position: fixed;
       inset: 0;
       z-index: 2000;
-      background: rgba(5, 12, 14, 0.94);
+      background: rgba(5, 12, 14, 0.95);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       flex-direction: column;
@@ -140,7 +174,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: #fff;
       font-size: 1.5rem;
@@ -157,12 +191,8 @@
       background: var(--primary-teal);
       border-color: var(--primary-teal);
     }
-    .slideshow-prev {
-      left: -25px;
-    }
-    .slideshow-next {
-      right: -25px;
-    }
+    .slideshow-prev { left: -25px; }
+    .slideshow-next { right: -25px; }
     @media (max-width: 768px) {
       .slideshow-prev { left: 5px; }
       .slideshow-next { right: 5px; }
@@ -255,117 +285,27 @@
     </div>
   </div>
 
-  <!-- Available photos with uncropped view -->
+  <!-- Available Photos with Category Filter -->
   <section class="section" id="photos" data-section-title="Photographs">
     <div class="container">
-      <div class="section-header reveal" style="margin-bottom:2.5rem;">
+      <div class="section-header reveal" style="margin-bottom:2rem;">
         <span class="section-subtitle">Cherished Memories</span>
-        <h2 class="section-title">Portraits & Milestones</h2>
-        <p class="section-desc">Click any photo or launch the slideshow to view each moment in full detail.</p>
+        <h2 class="section-title">Portraits & Life Chapters</h2>
+        <p class="section-desc">Filter by category or launch the slideshow to view each moment in full detail.</p>
       </div>
 
-      <div class="photo-grid">
-        <div class="photo-item reveal" onclick="openSlideshow(0)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-hero.jpg" alt="Apostle Prosper Okujere smiling in white suit and red tie" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Warm Smile in White Suit</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
-
-        <div class="photo-item reveal" onclick="openSlideshow(1)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-marriage-couple.jpg" alt="Apostle Prosper with Rev. Rita Okujere" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Apostle Prosper & Rev. Rita Okujere</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
-
-        <div class="photo-item reveal" onclick="openSlideshow(2)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-mic.jpg" alt="Apostle Prosper holding microphone during exhortation" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Ministering with the Microphone</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
-
-        <div class="photo-item reveal" onclick="openSlideshow(3)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-suit.jpg" alt="Apostle Prosper standing in black suit" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Standing in Official Suit</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
-
-        <div class="photo-item reveal" onclick="openSlideshow(4)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-formal-black.jpg" alt="Apostle Prosper seated in formal attire with bowtie" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Seated in Formal Bowtie</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
-
-        <div class="photo-item reveal" onclick="openSlideshow(5)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-traditional.jpg" alt="Apostle Prosper in regal traditional attire" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Regal Traditional Attire</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
-
-        <div class="photo-item reveal" onclick="openSlideshow(6)">
-          <div class="photo-item-media">
-            <img src="../assets/images/apostle-early-days.jpg" alt="Apostle Prosper in youthful days" loading="lazy">
-          </div>
-          <div class="photo-info">
-            <span class="photo-title">Early Youthful Days</span>
-            <span class="photo-zoom-hint" title="View photo" aria-label="View photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11-8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
-          </div>
-        </div>
+      <!-- Filter Buttons -->
+      <div class="gallery-filter-tabs">
+        <button class="gallery-filter-btn active" data-category="all">All Photos (24)</button>
+        <button class="gallery-filter-btn" data-category="family">Family & Matrimony (7)</button>
+        <button class="gallery-filter-btn" data-category="family-friends">Family & Friends (6)</button>
+        <button class="gallery-filter-btn" data-category="ministry">Work & Ministry (6)</button>
+        <button class="gallery-filter-btn" data-category="portraits">Portraits & Milestones (5)</button>
       </div>
-    </div>
-  </section>
 
-  <!-- Coming Soon categories -->
-  <section class="section section-alt" id="categories" data-section-title="Categories">
-    <div class="container" style="max-width:780px;">
-      <div class="coming-soon-card reveal">
-        <span class="coming-soon-badge">Coming Soon</span>
-        <div class="legacy-icon" style="margin:0 auto 1.5rem;">🖼️</div>
-        <h2 style="font-size:1.8rem; margin-bottom:0.8rem;">Categorised Photo Archives</h2>
-        <p style="max-width:520px; margin:0 auto 1.5rem;">We are compiling more photo albums across specific life milestones.</p>
-        <div style="display:flex; justify-content:center; gap:0.8rem; flex-wrap:wrap;">
-          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Family & Matrimony</span>
-          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Civil Service Career</span>
-          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Ordination & Camp Meetings</span>
-          <span style="font-size:0.83rem; padding:0.35rem 1rem; border-radius:20px; background:rgba(0,128,128,0.1); color:var(--primary-teal);">Sound of Abundance Ministry</span>
-        </div>
+      <!-- Dynamic Gallery Grid Container -->
+      <div class="photo-grid" id="photo-grid-container">
+        <!-- Rendered by JS -->
       </div>
     </div>
   </section>
@@ -382,7 +322,7 @@
   </div>
 
   <div class="slideshow-footer">
-    <div class="slideshow-counter" id="slideshow-counter">1 / 7</div>
+    <div class="slideshow-counter" id="slideshow-counter">1 / 24</div>
     <div class="slideshow-caption-text" id="slideshow-caption">Photo</div>
   </div>
 </div>
@@ -400,21 +340,87 @@
 
 <script src="../js/main.js"></script>
 <script>
-  const GALLERY_DATA = [
-    { src: '../assets/images/apostle-hero.jpg', caption: 'Radiant smile in white suit and red tie' },
-    { src: '../assets/images/apostle-marriage-couple.jpg', caption: 'Apostle Prosper and his beloved wife, Rev. Rita Okujere' },
-    { src: '../assets/images/apostle-mic.jpg', caption: 'Apostle Prosper holding the microphone during ministry' },
-    { src: '../assets/images/apostle-suit.jpg', caption: 'Official ministerial service portrait' },
-    { src: '../assets/images/apostle-formal-black.jpg', caption: 'Distinguished statesman in black suit and bowtie' },
-    { src: '../assets/images/apostle-traditional.jpg', caption: 'Regal and joyful patriarch in traditional attire' },
-    { src: '../assets/images/apostle-early-days.jpg', caption: 'Youthful days of perseverance and faith' }
+  const ALL_GALLERY_PHOTOS = [
+    // Family & Matrimony
+    { src: '../assets/images/family/Young daddy and mummy.jpeg', title: 'Young Daddy & Mummy', caption: 'Early marital bliss: Apostle Prosper and Rev. Rita Okujere', category: 'family' },
+    { src: '../assets/images/family/Dad in white trad.jpeg', title: 'Dad in White Traditional Attire', caption: 'Regal and serene in white native wear', category: 'family' },
+    { src: '../assets/images/family/D8ECB381-1265-45C8-A310-6B02613427BD.JPG.jpeg', title: 'Cherished Family Celebration', caption: 'Apostle Prosper surrounded by loved ones', category: 'family' },
+    { src: '../assets/images/family/WhatsApp Image 2026-08-06 at 12.15.48 AM.jpeg', title: 'Family Moment', caption: 'Warm fellowship and family harmony', category: 'family' },
+    { src: '../assets/images/family/WhatsApp Image 2026-08-06 at 12.15.48 AM (1).jpeg', title: 'Joyful Gathering', caption: 'Sharing memorable laughter together', category: 'family' },
+    { src: '../assets/images/family/WhatsApp Image 2026-08-06 at 12.15.48 AM (3).jpeg', title: 'Family Togetherness', caption: 'Love and unity across the generations', category: 'family' },
+    { src: '../assets/images/apostle-marriage-couple.jpg', title: 'Apostle Prosper & Rev. Rita', caption: 'Walking together in faith, devotion and purpose', category: 'family' },
+
+    // Family & Friends
+    { src: '../assets/images/family-and-friends/dad and favour.jpeg', title: 'Daddy & Favour', caption: 'Tender fatherly affection and warmth', category: 'family-friends' },
+    { src: '../assets/images/family-and-friends/dad and precious.jpeg', title: 'Daddy & Precious', caption: 'Father and son sharing fellowship and counsel', category: 'family-friends' },
+    { src: '../assets/images/family-and-friends/Dad and his sisters.jpeg', title: 'Daddy & His Sisters', caption: 'A devoted brother standing proudly with his sisters', category: 'family-friends' },
+    { src: '../assets/images/family-and-friends/grandchildren.jpeg', title: 'With the Grandchildren', caption: 'A doting grandfather with the next generation', category: 'family-friends' },
+    { src: '../assets/images/family-and-friends/young Dad eating .jpg.jpeg', title: 'Young Dad Sharing a Meal', caption: 'A relaxed and joyful personal moment', category: 'family-friends' },
+    { src: '../assets/images/family-and-friends/WhatsApp Image 2026-10-03 at 7.59.25 AM.jpeg', title: 'Fellowship with Friends', caption: 'Smiling alongside cherished family friends', category: 'family-friends' },
+
+    // Work & Ministry
+    { src: '../assets/images/work-and-ministry/pastorial ordination.jpeg', title: 'Pastoral Ordination', caption: 'Solemn consecration into the holy ministry', category: 'ministry' },
+    { src: '../assets/images/work-and-ministry/daddy and bishop nuel.jpeg', title: 'With Bishop Nuel Ikeakanam', caption: 'Honouring spiritual fatherhood at House of Freedom', category: 'ministry' },
+    { src: '../assets/images/work-and-ministry/Dad with Apst Gbenga Folorunsho.jpeg', title: 'With Apostle Gbenga Folorunsho', caption: 'Fellowship among anointed ministers of the gospel', category: 'ministry' },
+    { src: '../assets/images/work-and-ministry/Daddy with Rev Ade and Rev Albert.jpeg', title: 'With Rev. Ade & Rev. Albert', caption: 'Comrades in kingdom labour and service', category: 'ministry' },
+    { src: '../assets/images/work-and-ministry/WhatsApp Image 2026-10-06 at 3.05.09 AM.jpeg', title: 'Ministerial Convention', caption: 'Ministering grace and apostolic authority', category: 'ministry' },
+    { src: '../assets/images/apostle-mic.jpg', title: 'Preaching with the Word', caption: 'The Fasting Apostle declaring the kingdom of God', category: 'ministry' },
+
+    // Portraits & Milestones
+    { src: '../assets/images/apostle-hero.jpg', title: 'Radiant Smile in White Suit', caption: 'Unforgettable warmth and benevolent grace', category: 'portraits' },
+    { src: '../assets/images/apostle-suit.jpg', title: 'Standing in Ministerial Dignity', caption: 'A godly statesman and upright shepherd', category: 'portraits' },
+    { src: '../assets/images/apostle-formal-black.jpg', title: 'Executive Statesman', caption: 'Distinguished administrator serving Delta State', category: 'portraits' },
+    { src: '../assets/images/apostle-traditional.jpg', title: 'Regal Traditional Attire', caption: 'Celebrating culture, stature, and joy', category: 'portraits' },
+    { src: '../assets/images/apostle-early-days.jpg', title: 'Early Youthful Years', caption: 'Grit, determination, and humble beginnings in Ekakpamre', category: 'portraits' }
   ];
 
+  let currentCategory = 'all';
+  let filteredPhotos = [...ALL_GALLERY_PHOTOS];
   let currentIndex = 0;
+
+  const gridContainer = document.getElementById('photo-grid-container');
   const modal = document.getElementById('slideshow-modal');
   const slideImg = document.getElementById('slideshow-img');
   const counterEl = document.getElementById('slideshow-counter');
   const captionEl = document.getElementById('slideshow-caption');
+
+  function renderGallery(category = 'all') {
+    currentCategory = category;
+    filteredPhotos = category === 'all' 
+      ? ALL_GALLERY_PHOTOS 
+      : ALL_GALLERY_PHOTOS.filter(p => p.category === category);
+
+    gridContainer.innerHTML = '';
+    filteredPhotos.forEach((photo, idx) => {
+      const card = document.createElement('div');
+      card.className = 'photo-item reveal';
+      card.onclick = () => openSlideshow(idx);
+      card.innerHTML = `
+        <div class="photo-item-media">
+          <img src="${photo.src}" alt="${photo.title}" loading="lazy">
+        </div>
+        <div class="photo-info">
+          <div>
+            <div class="photo-title">${photo.title}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">${photo.caption}</div>
+          </div>
+          <span class="photo-zoom-hint" title="View in Slideshow" aria-label="View photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </span>
+        </div>
+      `;
+      gridContainer.appendChild(card);
+    });
+  }
+
+  // Filter Buttons Handler
+  document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGallery(btn.dataset.category);
+    });
+  });
 
   function openSlideshow(index = 0) {
     currentIndex = index;
@@ -429,21 +435,21 @@
   }
 
   function nextSlide() {
-    currentIndex = (currentIndex + 1) % GALLERY_DATA.length;
+    currentIndex = (currentIndex + 1) % filteredPhotos.length;
     updateSlide();
   }
 
   function prevSlide() {
-    currentIndex = (currentIndex - 1 + GALLERY_DATA.length) % GALLERY_DATA.length;
+    currentIndex = (currentIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
     updateSlide();
   }
 
   function updateSlide() {
-    const item = GALLERY_DATA[currentIndex];
+    const item = filteredPhotos[currentIndex];
     slideImg.src = item.src;
-    slideImg.alt = item.caption;
-    counterEl.textContent = `${currentIndex + 1} / ${GALLERY_DATA.length}`;
-    captionEl.textContent = item.caption;
+    slideImg.alt = item.title;
+    counterEl.textContent = `${currentIndex + 1} / ${filteredPhotos.length}`;
+    captionEl.textContent = `${item.title} — ${item.caption}`;
   }
 
   document.getElementById('start-slideshow-btn')?.addEventListener('click', () => openSlideshow(0));
@@ -463,6 +469,9 @@
     if (e.key === 'ArrowRight') nextSlide();
     if (e.key === 'ArrowLeft') prevSlide();
   });
+
+  // Initial render
+  renderGallery('all');
 </script>
 </body>
 </html>

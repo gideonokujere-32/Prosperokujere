@@ -129,43 +129,51 @@ function setActiveNavLink() {
 const FAMILY_TRIBUTES = [
   {
     id: 'fam-wife', name: "Rev. Rita A. Okujere", relation: "Beloved Wife",
+    image: '../assets/images/tributes/wife.png',
     isFeatured: true, isWide: true,
     message: `My husband, my darling. You were the love of my life, my heartbeat. You taught me what real love meant. You were a man of integrity, honourable, caring, and loving. There are not enough words to describe you or the kind of person you were.\n\nRight from the time I set my eyes on you, I knew you were the man for me. You were so gentle, and you were so caring. You were the one who truly taught me what love is all about. You taught me how to love. You were the epitome of love.\n\nFor the 31 years we have been married, and the almost two years we knew each other before that, it has been bliss. I knew you were the one for me. I never wanted to be apart from you. We both knew we were one for each other.\n\nYou were my friend, my confidant. You were the one I could tell the secrets I could never share with another. I will always thank God for giving me a man like you.\n\nSometimes I wonder how I could live without you. I wonder how I can go through life without you. I never thought we would part so soon. I never thought a day would come when I would look for you and I wouldn't find you, when I would call you and you would not answer.\n\nWho will love me like you did? Who will be my life partner, my helper, my companion? Who will stand by me like my love? You were kind to everyone who came your way.\n\nYou showed love to my family and to your family. I am glad because I know my children were blessed to have a father like you, and I was blessed to have a husband like you.\n\nI love you, darling. Till the day I die, I will always love you. I can never forget you. Only God can help me to go through life without you, because He says He is a father to the fatherless and the husband of the widow.\n\nMy heart, my eyes, my thoughts, my everything. God alone will see me through. I love you.`,
     date: "October 2026"
   },
   {
     id: 'fam-faith', name: "Mrs. Faith O. Ebiogbe", relation: "First Daughter",
+    image: '../assets/images/tributes/Faith egiobe.jpeg',
     message: "As a father you were everything I needed you to be at every stage of my life. As a husband you never stopped trying to get it right with your wife and you succeeded. As a priest you loved your God and served him till your last breath. Daddy you were excellent, I love you, rest well.",
     date: "October 2026"
   },
   {
     id: 'fam-favour-m', name: "Mrs. Favour Mbaekwe", relation: "Daughter",
+    image: '../assets/images/tributes/mrs favour mbaekwe.jpeg',
     message: `Dad, you were a lovable man, and everyone who met you felt it. You had a warmth that drew people close and a smile that made them feel at home.\n\nYou were firm, but always fair. You set standards for us, not to be hard on us, but because you believed we could reach them. When you corrected us, it came with love, and when you praised us, we knew we had earned it.\n\nAbove all, you put God and family first. You didn't only preach your faith; you lived it every day, in how you served, how you gave, and how you loved. Your devotion to God was matched by your devotion to us, and we never once doubted where we stood in your heart.\n\nYou were a good man, the kind the world needs more of. You have left us a legacy of faith, integrity, and love that we will carry for the rest of our lives.\n\nRest well, Dad. You fought a good fight, you finished your race, and you kept the faith.`,
     date: "October 2026"
   },
   {
     id: 'fam-precious', name: "Evang. Precious Peter Okujere Jr.", relation: "First Son",
+    image: '../assets/images/tributes/precious okujere.png',
     isFeatured: true,
     message: `What a father my dad was! A destiny like mine won't have succeeded under a different kind of man. God used my father to guide me into my life's purpose. I'm short of words to write a tribute because where do I start from.\n\nHe taught me perseverance, determination, optimisation, spirituality towards Jesus Christ and devotion of life and resources to the Holy Spirit and to family above financial advantage. He taught me how to work on my anger, he discipled me on love for God, family and for people. He taught me forgiveness first hand. He prioritised mercy above vengeance and actually lived it.\n\nHe will say: "Everyone has peace in themselves. Every protracted conflict is because one person in that conflict is refusing to volunteer their peace to end the conflict."\n\nMy dad was a good man and I miss my dad. May his rest be without worry for his progeny here on earth. May the Lord look favourably on his nuclear family and remember his resting servant's labour of love for Him. Until resurrection day, Dad rest — your children got it from here, God helping us.`,
     date: "October 2026"
   },
   {
     id: 'fam-gideon', name: "Mr. Gideon Okujere", relation: "Son",
+    image: '../assets/images/tributes/gideon okujere.jpeg',
     message: `My Daddy, My mentor! You always taught me about the love of Christ and the love of a man and his family. I have never come across any man better than you and all I have always wanted to do was to make you proud and happy. You are my template for what a real man should be.\n\nI know we will meet again in heaven because you made sure to teach me about making heaven, but for now I will continue to carry your memory, principles, words of wisdom and love in my heart all the days of my life.\n\nI will not let you down Daddy. I love and miss you so much.`,
     date: "October 2026"
   },
   {
     id: 'fam-praise', name: "Ms. Praise Okujere, Esq.", relation: "Daughter",
+    image: '../assets/images/tributes/praise okujere.jpeg',
     message: "As a father you were everything I needed you to be at every stage of my life. As a husband you never stopped trying to get it right with your wife and you succeeded. As a priest you loved your God and served him till your last breath. Daddy you were excellent, I love you, rest well.",
     date: "October 2026"
   },
   {
     id: 'fam-blessing', name: "Ms. Blessing Ajise", relation: "Daughter",
+    image: '../assets/images/tributes/Blessing Ajise.jpeg',
     message: `You were the perfect dad anyone could have asked for and of all the special gifts in life, you were one of the greatest I got.\n\nIn so many ways you impacted and changed my life. Your love, kindness, godliness and teachings will always be in my heart. I will always remember you with smiles and not with tears, knowing you are in the place you have always longed to be.`,
     date: "October 2026"
   },
   {
     id: 'fam-favour-o', name: "Ms. Favour Okujere", relation: "Daughter",
+    image: '../assets/images/tributes/faith okujere.jpeg',
     message: "It still feels like a dream; I can't believe daddy is gone. Most handsome man, intelligent, best dressed, God fearing, God's own Apostle, man of honour. How do I forget you? I will always remember you my strong man. I love you always and forever. Rest on king. We miss you more each day.",
     date: "October 2026"
   }
@@ -292,10 +300,12 @@ function renderTributes(containerId, data) {
     const classes = ['tribute-card'];
     if (item.isFeatured) classes.push('tribute-featured');
     if (item.isWide) classes.push('tribute-wide');
-    card.className = classes.join(' ');
+    const avatarHtml = item.image
+      ? `<div class="tribute-avatar tribute-avatar-img"><img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy"></div>`
+      : `<div class="tribute-avatar">${initials}</div>`;
     card.innerHTML = `
       <div class="tribute-header">
-        <div class="tribute-avatar">${initials}</div>
+        ${avatarHtml}
         <div>
           <div class="tribute-author">${esc(item.name)}</div>
           <div class="tribute-relation">${esc(item.relation)}</div>
