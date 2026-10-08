@@ -409,18 +409,30 @@ a:hover { color: var(--primary-teal-light); }
 .tributes-tab-btn:hover { border-color: var(--primary-teal); color: var(--primary-teal); }
 .tributes-tab-btn.active { background: var(--primary-teal); border-color: var(--primary-teal); color: #fff; box-shadow: 0 6px 20px var(--teal-glow); }
 
-.tributes-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+/* Masonry Multi-Column Layout for natural height packing */
+.tributes-wall {
+  columns: 3 320px;
+  column-gap: 2rem;
+}
 
 .tribute-card {
-  background: var(--bg-card); border: 1px solid var(--bg-card-border);
-  border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-sm);
-  transition: var(--transition-smooth); display: flex; flex-direction: column;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
 }
 .tribute-card:hover { transform: translateY(-5px); border-color: var(--primary-teal); box-shadow: var(--shadow-md); }
 
 .tribute-featured {
   border-color: rgba(var(--primary-teal-rgb), 0.35);
-  background: linear-gradient(135deg, rgba(var(--primary-teal-rgb), 0.04), var(--bg-card));
+  background: linear-gradient(135deg, rgba(var(--primary-teal-rgb), 0.05), var(--bg-card));
 }
 
 .tribute-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.1rem; }
