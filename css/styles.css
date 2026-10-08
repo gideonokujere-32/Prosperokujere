@@ -422,7 +422,6 @@ a:hover { color: var(--primary-teal-light); }
   border-color: rgba(var(--primary-teal-rgb), 0.35);
   background: linear-gradient(135deg, rgba(var(--primary-teal-rgb), 0.04), var(--bg-card));
 }
-@media (min-width: 992px) { .tribute-featured { grid-column: span 2; } }
 
 .tribute-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.1rem; }
 .tribute-avatar {
