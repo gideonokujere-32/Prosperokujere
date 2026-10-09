@@ -300,8 +300,14 @@ function renderTributes(containerId, data) {
     const classes = ['tribute-card'];
     if (item.isFeatured) classes.push('tribute-featured');
     if (item.isWide) classes.push('tribute-wide');
+    card.className = classes.join(' ');
+
+    // Pre-seed an initial row span so cards never collapse before measurement
+    const estSpan = item.isWide ? Math.max(50, Math.ceil(item.message.length / 28)) : Math.max(22, Math.ceil(item.message.length / 14));
+    card.style.gridRowEnd = `span ${estSpan}`;
+
     const avatarHtml = item.image
-      ? `<div class="tribute-avatar tribute-avatar-img"><img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy"></div>`
+      ? `<div class="tribute-avatar tribute-avatar-img"><img src="${esc(item.image)}" alt="${esc(item.name)}" loading="eager"></div>`
       : `<div class="tribute-avatar">${initials}</div>`;
     card.innerHTML = `
       <div class="tribute-header">
@@ -317,16 +323,19 @@ function renderTributes(containerId, data) {
 }
 
 function resizeMasonryItems() {
-  const cards = document.querySelectorAll('.tributes-wall .tribute-card');
-  const rowHeight = 10; // matches grid-auto-rows: 10px
-  cards.forEach(card => {
-    // Only calculate for visible cards
-    if (card.offsetParent !== null) {
+  const visibleWalls = document.querySelectorAll('.tributes-wall');
+  const rowHeight = 10;
+  visibleWalls.forEach(wall => {
+    if (wall.offsetParent === null) return;
+    const cards = wall.querySelectorAll('.tribute-card');
+    cards.forEach(card => {
       card.style.gridRowEnd = 'auto';
+    });
+    cards.forEach(card => {
       const height = card.getBoundingClientRect().height;
-      const rowSpan = Math.ceil((height + 28) / (rowHeight + 0));
+      const rowSpan = Math.ceil((height + 28) / rowHeight);
       card.style.gridRowEnd = `span ${rowSpan}`;
-    }
+    });
   });
 }
 
@@ -341,18 +350,41 @@ function initTributeTabs() {
   renderTributes('general-tributes-grid', GENERAL_TRIBUTES);
   renderTributes('family-tributes-grid', FAMILY_TRIBUTES);
 
-  // Initial sizing
+  // Trigger masonry calculation across frames and lifecycle events
+  requestAnimationFrame(resizeMasonryItems);
   setTimeout(resizeMasonryItems, 50);
+  setTimeout(resizeMasonryItems, 200);
+
+  if (document.fonts) {
+    document.fonts.ready.then(resizeMasonryItems);
+  }
+
+  window.addEventListener('load', resizeMasonryItems);
   window.addEventListener('resize', resizeMasonryItems);
+
+  // Re-run if avatar images load asynchronously
+  document.querySelectorAll('.tributes-wall img').forEach(img => {
+    if (!img.complete) {
+      img.addEventListener('load', resizeMasonryItems);
+    }
+  });
 
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       tabs.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const tab = btn.dataset.tab;
-      if (famWrap) famWrap.style.display = tab === 'family' ? 'block' : 'none';
-      if (genWrap) genWrap.style.display = tab === 'general' ? 'block' : 'none';
-      setTimeout(resizeMasonryItems, 30);
+      if (tab === 'family') {
+        if (famWrap) famWrap.style.display = 'block';
+        if (genWrap) genWrap.style.display = 'none';
+      } else {
+        if (famWrap) famWrap.style.display = 'none';
+        if (genWrap) genWrap.style.display = 'block';
+      }
+      resizeMasonryItems();
+      requestAnimationFrame(resizeMasonryItems);
+      setTimeout(resizeMasonryItems, 50);
+      setTimeout(resizeMasonryItems, 200);
     });
   });
 }
