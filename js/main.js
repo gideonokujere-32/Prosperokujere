@@ -137,7 +137,7 @@ const FAMILY_TRIBUTES = [
   {
     id: 'fam-faith', name: "Mrs. Faith O. Ebiogbe", relation: "First Daughter",
     image: '../assets/images/tributes/Faith egiobe.jpeg',
-    message: "As a father you were everything I needed you to be at every stage of my life. As a husband you never stopped trying to get it right with your wife and you succeeded. As a priest you loved your God and served him till your last breath. Daddy you were excellent, I love you, rest well.",
+    message: "Daddy, you were my protector, my example of what a godly man and father should be. From childhood to womanhood, you guided me with patience and strength, you showed me what true devotion looks like. You lived for God and served Him faithfully to your last breath. Rest well, Daddy. I love you always.",
     date: "October 2026"
   },
   {
